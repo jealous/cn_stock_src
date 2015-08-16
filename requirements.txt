@@ -1,0 +1,4 @@
+int_date
+numpy>=1.9.2
+requests>=2.7.0
+pandas>=0.15.2

@@ -1,0 +1,17 @@
+# Binaries
+*.pyc
+.tox/
+.env/
+build/
+dist/
+*.egg-info/
+.eggs/
+docs/_build/doctrees/
+
+# IDE related
+.idea/
+
+# tests
+junit-result.xml
+htmlcov/
+.coverage

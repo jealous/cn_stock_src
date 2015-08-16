@@ -1,0 +1,15 @@
+language: python
+python:
+    - "2.7"
+install:
+    - "pip install tox"
+    - "pip install python-coveralls"
+script:
+    - "tox -e pep8"
+    - "tox -e py27"
+    - "tox -e py34"
+after_success:
+    - coveralls
+notifications:
+    email:
+        - jealous@163.com
