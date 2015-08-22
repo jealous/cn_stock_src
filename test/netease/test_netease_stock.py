@@ -2,19 +2,19 @@
 from unittest import TestCase
 from hamcrest import assert_that, equal_to, close_to
 from cn_stock_src.cn_stock_util import read_file_in_same_dir
-from cn_stock_src.netease.netease_stock import NeteaseStock
+from cn_stock_src.netease import NeteaseStock
 
 __author__ = 'Cedric Zhuang'
 
 
 class NeteaseStockTest(TestCase):
     def test_join_indices(self):
-        result = NeteaseStock.join_indices(['sh600000', 'sh600010'])
+        result = NeteaseStock._join_indices(['sh600000', 'sh600010'])
         assert_that(result, equal_to('0600000,0600010'))
 
     def test_parse(self):
         body = read_file_in_same_dir(__file__, 'daily_detail.json')
-        result = NeteaseStock.parse(body)
+        result = NeteaseStock._parse(body)
         sh60 = result.ix['sh600000']
         assert_that(sh60.name, equal_to('sh600000'))
         assert_that(sh60['name'], equal_to(u'浦发银行'))

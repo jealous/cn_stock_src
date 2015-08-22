@@ -1,12 +1,13 @@
 import logging.config
 import os
-from concurrent.futures import ThreadPoolExecutor
+from multiprocessing import Pool, cpu_count
 
 __author__ = 'Cedric Zhuang'
 
+__all__ = ['CnStockHttpError']
+
 
 def get_thread_count():
-    from multiprocessing import cpu_count
     return cpu_count() + 2
 
 
@@ -14,12 +15,10 @@ def multi_thread(func, items, call_back=None, thread_count=None):
     if thread_count is None:
         thread_count = get_thread_count()
 
-    results = []
-    with ThreadPoolExecutor(max_workers=thread_count) as executor:
-        for result in executor.map(func, items):
-            if call_back is not None:
-                call_back(result)
-            results.append(result)
+    executor = Pool(thread_count)
+    results = executor.map(func, items)
+    if call_back is not None:
+        results = executor.map(call_back, results)
     return results
 
 
@@ -60,3 +59,51 @@ def config_logger():
             }
         }
     })
+
+
+class CnStockHttpError(Exception):
+    def __init__(self, url, status_code):
+        msg = ('request failed.  url: {}, response status code: {}'
+               .format(url, status_code))
+        super(self, CnStockHttpError).__init__(msg)
+
+
+TRADE_DETAIL_COLUMNS = ['name', 'open', 'close', 'price',
+                        'high', 'low', 'volume', 'amount',
+                        'buy1_volume', 'buy1_price',
+                        'buy2_volume', 'buy2_price',
+                        'buy3_volume', 'buy3_price',
+                        'buy4_volume', 'buy4_price',
+                        'buy5_volume', 'buy5_price',
+                        'sell1_volume', 'sell1_price',
+                        'sell2_volume', 'sell2_price',
+                        'sell3_volume', 'sell3_price',
+                        'sell4_volume', 'sell4_price',
+                        'sell5_volume', 'sell5_price',
+                        'date', 'time']
+
+K_LINE_COLUMNS = ['date', 'open', 'high', 'low',
+                  'close', 'volume', 'amount']
+
+YAHOO_K_LINE_COLUMNS = ['date', 'open', 'high', 'low',
+                        'close', 'volume', 'adjClose']
+
+SINA_STOCK_INFO_COLUMNS = ['type',
+                           'pinyin',
+                           'per-share earnings(year)',
+                           'per-share earnings(four quarters)',
+                           'per-share earnings(quarter)',
+                           'net assets per share',
+                           'unknown',
+                           'general capital(10,000Y)',
+                           'floating stock(10,000Y)',
+                           'floating A stock(10,000Y)',
+                           'floating B stock(10,000Y)',
+                           'currency',
+                           'annual net profit(10**8Y)',
+                           'four quarters net profit(10**8Y)',
+                           'issue price',
+                           'unknown',
+                           'return on equity',
+                           'quarter main business income(10**8Y)',
+                           'quarter net profit(10**8Y)']

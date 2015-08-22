@@ -1,4 +1,5 @@
-from setuptools import setup
+from setuptools import setup, find_packages
+from pip.req import parse_requirements
 import io
 import os
 import cn_stock_src
@@ -23,16 +24,23 @@ def read(*filenames, **kwargs):
     return sep.join(buf)
 
 
+def read_requirements(filename):
+    requirements = parse_requirements(filename, session=False)
+    return [str(item.req) for item in requirements]
+
+
 setup(
     name="cn_stock_src",
     version=cn_stock_src.__version__,
     author="Cedric Zhuang",
     author_email="cedric.zhuang@gmail.com",
-    description="Utility for int date like 20150312.",
+    description=("Utility for retrieving basic China "
+                 "stock data from different sources."),
     license="BSD",
     keywords="Stock data retriever for China stock market.",
     url="http://github.com/jealous/cn_stock_src",
-    packages=['cn_stock_src'],
+    include_package_data = True,
+    packages=find_packages(),
     platforms=['any'],
     long_description=read('README.md'),
     classifiers=[
@@ -44,5 +52,6 @@ setup(
         "Topic :: Utilities",
         "License :: OSI Approved :: BSD License",
     ],
-    tests_require=['pytest', 'pyhamcrest']
+    install_requires=read_requirements('requirements.txt'),
+    tests_require=read_requirements('test-requirements.txt')
 )

@@ -14,20 +14,13 @@ class MockResponse(object):
 
 
 class SinaStockTest(TestCase):
-    def get_mock_input(self, _):
-        response = MockResponse
-        response.status_code = 200
-        response.text = read_file_in_same_dir(__file__,
-                                              'sina_stock_detail.txt')
-        return response
-
     def test_latest(self):
         """
         this case requires network connection
         :return:
         """
-        data = SinaStock().latest(['sh999998', 'sh999999'],
-                                  self.get_mock_input)
+        body = read_file_in_same_dir(__file__, 'sina_stock_detail.txt')
+        data = SinaStock._parse(body)
         assert_that(len(data), equal_to(2))
 
         stock = data.ix['sh999999']

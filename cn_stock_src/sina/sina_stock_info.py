@@ -2,12 +2,13 @@
 import re
 import threading
 from pandas import DataFrame
-from error import ParamError
-from cn_stock_src import SINA_STOCK_INFO_COLUMNS
+from cn_stock_src.cn_stock_util import SINA_STOCK_INFO_COLUMNS
 from cn_stock_src.cn_stock_util import multi_thread
 from cn_stock_src.sina.sina_stock import SinaStock
 
 __author__ = 'Cedric Zhuang'
+
+__all__ = []
 
 
 class SinaStockInfo(SinaStock):
@@ -47,21 +48,19 @@ class SinaStockInfo(SinaStock):
     347.9900		季度净利润（亿元）
     """
 
-    debug = False
-
     def __init__(self):
         super(SinaStockInfo, self).__init__()
         self.stock_info = None
 
     @classmethod
-    def join_indices(cls, indices):
+    def _join_indices(cls, indices):
         info_names = []
         for index in indices:
             info_names.append("{}_i".format(index))
         return ",".join(info_names)
 
     @classmethod
-    def parse(cls, body):
+    def _parse(cls, body):
         stocks = body.split(';')
         ret = DataFrame(columns=SINA_STOCK_INFO_COLUMNS)
         for stock in stocks:
@@ -70,7 +69,7 @@ class SinaStockInfo(SinaStock):
                 continue
             m = re.match('var hq_str_(.*)_i="(.+)"', stock)
             if m is None:
-                raise ParamError("response text is not valid: {}"
+                raise ValueError("response text is not valid: {}"
                                  .format(stock))
             index, data = m.group(1, 2)
             data_array = data.split(',')[:32]
@@ -80,7 +79,7 @@ class SinaStockInfo(SinaStock):
         return ret
 
     @classmethod
-    def regroup(cls, l, size):
+    def _regroup(cls, l, size):
         grouped = []
         if len(l) <= size:
             grouped.append(l)
@@ -91,11 +90,11 @@ class SinaStockInfo(SinaStock):
                 i += size
         return grouped
 
-    def retrieve_data_in_trunk(self, indices, trunk=None):
+    def _retrieve_data_in_trunk(self, indices, trunk=None):
         if trunk is None:
-            trunk = self.get_batch_size()
+            trunk = self._get_batch_size()
 
-        grouped_indices = self.regroup(indices, trunk)
+        grouped_indices = self._regroup(indices, trunk)
 
         lock = threading.Lock()
         self.stock_info = None

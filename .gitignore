@@ -15,3 +15,4 @@ docs/_build/doctrees/
 junit-result.xml
 htmlcov/
 .coverage
+.coverage.*

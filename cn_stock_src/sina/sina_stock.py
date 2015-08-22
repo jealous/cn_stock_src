@@ -1,38 +1,48 @@
 # coding=utf-8
+""" Read stock data from sina
+
+Sample:
+
+```
+SinaStock.retrieve_data('sh600000')
+```
+
+"""
 import logging
 import re
 import int_date
 from pandas import DataFrame
-from error import ParamError
-import cn_stock_src
+from cn_stock_src.cn_stock_util import TRADE_DETAIL_COLUMNS
 from cn_stock_src.cn_stock_base import CnStockBase
 
 __author__ = 'Cedric Zhuang'
+
+__all__ = []
 
 log = logging.getLogger(__name__)
 
 
 class SinaStock(CnStockBase):
-    BASE = "http://hq.sinajs.cn/list={}"
+    _BASE = "http://hq.sinajs.cn/list={}"
 
     def __init__(self):
         super(SinaStock, self).__init__()
 
     @classmethod
-    def get_base(cls):
-        return cls.BASE
+    def _get_base(cls):
+        return cls._BASE
 
     @classmethod
-    def parse(cls, body):
+    def _parse(cls, body):
         stocks = body.split(';')
-        ret = DataFrame(columns=cn_stock_src.TRADE_DETAIL_COLUMNS)
+        ret = DataFrame(columns=TRADE_DETAIL_COLUMNS)
         for stock in stocks:
             stock = stock.strip()
             if len(stock) == 0:
                 continue
             m = re.match('var hq_str_(.*)="(.*)"', stock)
             if m is None:
-                raise ParamError("response text is not valid: {}"
+                raise ValueError("response text is not valid: {}"
                                  .format(stock))
             index, data = m.group(1, 2)
             if len(data) == 0:
@@ -48,9 +58,5 @@ class SinaStock(CnStockBase):
         return ret
 
     @classmethod
-    def join_indices(cls, indices):
+    def _join_indices(cls, indices):
         return ','.join(indices)
-
-
-if __name__ == '__main__':
-    print SinaStock.retrieve_data('sh600000')
