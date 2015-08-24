@@ -28,20 +28,34 @@ def read_requirements(filename):
         return f.read().splitlines()
 
 
+def get_description():
+    return ("Utility for retrieving basic China "
+            "stock data from different sources.")
+
+
+def get_long_description():
+    filename = 'README.md'
+    try:
+        import pypandoc
+        ret = pypandoc.convert(filename, 'rst')
+    except ImportError:
+        ret = read(filename)
+    return ret
+
+
 setup(
     name="cn_stock_src",
     version=__version__,
     author="Cedric Zhuang",
     author_email="cedric.zhuang@gmail.com",
-    description=("Utility for retrieving basic China "
-                 "stock data from different sources."),
+    description=get_description(),
     license="BSD",
     keywords="Stock data retriever for China stock market.",
     url="http://github.com/jealous/cn_stock_src",
     include_package_data=True,
     packages=find_packages(),
     platforms=['any'],
-    long_description=read('README.md'),
+    long_description=get_long_description(),
     classifiers=[
         "Programming Language :: Python",
         "Natural Language :: English",
