@@ -1,11 +1,9 @@
 # coding=utf-8
 from cn_stock_util import CnStockHttpError as CnStockHttpError
-from cn_stock_src import sina, yahoo
-from cn_stock_src.tdx import TdxDataSource
 
 __author__ = 'Cedric Zhuang'
 
-__version__ = '0.1.0'
+__version__ = '0.1.3'
 
 __all__ = [
     'latest',
@@ -20,6 +18,7 @@ def latest(*indices):
     :param indices: stock indices
     :return: data frame containing the latest stock data
     """
+    from cn_stock_src import sina
     return sina.latest(*indices)
 
 
@@ -30,6 +29,7 @@ def latest_company_info(*indices):
     :param indices: stock indices
     :return: data frame containing the basic information
     """
+    from cn_stock_src import sina
     return sina.latest_company_info(*indices)
 
 
@@ -40,9 +40,11 @@ def daily_k_line(*indices):
     :param indices: stock indices
     :return: generator of the DataFrame
     """
+    from cn_stock_src import yahoo
     for index in indices:
         yield yahoo.daily_k_line(index)
 
 
 def tdx(install_root_folder):
+    from cn_stock_src.tdx import TdxDataSource
     return TdxDataSource(install_root_folder)

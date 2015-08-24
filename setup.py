@@ -1,8 +1,7 @@
 from setuptools import setup, find_packages
-from pip.req import parse_requirements
 import io
 import os
-import cn_stock_src
+from cn_stock_src import __version__
 
 __author__ = 'Cedric Zhuang'
 
@@ -25,13 +24,13 @@ def read(*filenames, **kwargs):
 
 
 def read_requirements(filename):
-    requirements = parse_requirements(filename, session=False)
-    return [str(item.req) for item in requirements]
+    with open(filename) as f:
+        return f.read().splitlines()
 
 
 setup(
     name="cn_stock_src",
-    version=cn_stock_src.__version__,
+    version=__version__,
     author="Cedric Zhuang",
     author_email="cedric.zhuang@gmail.com",
     description=("Utility for retrieving basic China "
@@ -39,7 +38,7 @@ setup(
     license="BSD",
     keywords="Stock data retriever for China stock market.",
     url="http://github.com/jealous/cn_stock_src",
-    include_package_data = True,
+    include_package_data=True,
     packages=find_packages(),
     platforms=['any'],
     long_description=read('README.md'),
