@@ -3,7 +3,7 @@ from cn_stock_util import CnStockHttpError as CnStockHttpError
 
 __author__ = 'Cedric Zhuang'
 
-__version__ = '0.1.4'
+__version__ = '0.1.5'
 
 __all__ = [
     'latest',
@@ -31,6 +31,16 @@ def latest_company_info(*indices):
     """
     from cn_stock_src import sina
     return sina.latest_company_info(*indices)
+
+
+def financial_info(index):
+    """ get the company financial info for index
+
+    :param index: stock index
+    :return: data frame containing financial data by season
+    """
+    from cn_stock_src import netease
+    return netease.NeteaseStockInfo.latest(index)
 
 
 def daily_k_line(*indices):

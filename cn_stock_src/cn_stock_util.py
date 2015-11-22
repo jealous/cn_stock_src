@@ -1,3 +1,5 @@
+# coding=utf-8
+from __future__ import unicode_literals
 import logging.config
 import os
 from multiprocessing import Pool, cpu_count
@@ -65,7 +67,7 @@ class CnStockHttpError(Exception):
     def __init__(self, url, status_code):
         msg = ('request failed.  url: {}, response status code: {}'
                .format(url, status_code))
-        super(self, CnStockHttpError).__init__(msg)
+        super(CnStockHttpError, self).__init__(msg)
 
 
 TRADE_DETAIL_COLUMNS = ['name', 'open', 'close', 'price',
@@ -107,3 +109,46 @@ SINA_STOCK_INFO_COLUMNS = ['type',
                            'return on equity',
                            'quarter main business income(10**8Y)',
                            'quarter net profit(10**8Y)']
+
+NETEASE_STOCK_INFO_COLUMNS = [
+    # 日期(季度或年)
+    'date',
+    # 基本每股收益(元)
+    'per-share earnings',
+    # 每股净资产(元)
+    'net assets per share',
+    # 每股经营活动产生的现金流量净额(元)
+    'Net cash flow from operating activities per share',
+    # 主营业务收入(万元)
+    'main business income(10**5)',
+    # 主营业务利润(万元)
+    'main business profit(10**5)',
+    # 营业利润(万元)
+    'operating profit(10**5)',
+    # 投资收益(万元)
+    'equity earnings(10**5)',
+    # 营业外收支净额(万元)
+    'net non-operating income(10**5)',
+    # 利润总额(万元)
+    'total profit(10**5)',
+    # 净利润(万元)
+    'net margin(10**5)',
+    # 净利润(扣除非经常性损益后)(万元)
+    'Net profit (ex. non recurring gains and losses)(10**5)',
+    # 经营活动产生的现金流量净额(万元)
+    'Net cash flow from operating activities(10**5)',
+    # 现金及现金等价物净增加额(万元)
+    'Net increase in cash and cash equivalents(10**5)',
+    # 总资产(万元)
+    'total assets(10**5)',
+    # 流动资产(万元)
+    'floating assets(10**5)',
+    # 总负债(万元)
+    'gross liabilities(10**5)',
+    # 流动负债(万元)
+    'floating liabilities(10**5)',
+    # 股东权益不含少数股东权益(万元)
+    'shareholders interests(10**5)',
+    # 净资产收益率加权(%)
+    'net assets yield weighted (%)'
+]

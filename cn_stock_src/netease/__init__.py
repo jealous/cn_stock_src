@@ -8,11 +8,15 @@ NeteaseStock.latest(['sh600000', 'sh600010'])
 
 """
 from six import iteritems
+from six import string_types
 from pandas import DataFrame
-from cn_stock_src.cn_stock_util import TRADE_DETAIL_COLUMNS
+from cn_stock_src.cn_stock_util import TRADE_DETAIL_COLUMNS, \
+    NETEASE_STOCK_INFO_COLUMNS
 from cn_stock_src.cn_stock_base import CnStockBase
 import json
 import int_date
+import re
+import numpy as np
 
 __author__ = 'Cedric Zhuang'
 
@@ -87,6 +91,93 @@ class NeteaseStock(CnStockBase):
             index = '{}{}'.format(stock['type'].lower(), stock['symbol'])
             stocks.ix[index] = data
         return stocks
+
+    @classmethod
+    def _trans_index(cls, index):
+        ret = index
+        if index.startswith('sh'):
+            ret = index.replace('sh', '0')
+        elif index.startswith('sz'):
+            ret = index.replace('sz', '1')
+        return ret
+
+
+class NeteaseStockInfo(CnStockBase):
+    """get stock info from netease html
+
+    sample url looks like this:
+    season data
+    `http://quotes.money.163.com/f10/zycwzb_600010,season.html`
+
+    year data
+    `http://quotes.money.163.com/f10/zycwzb_600010,year.html`
+
+    season is the preferred source.
+    """
+    _BASE = "http://quotes.money.163.com/f10/zycwzb_{},season.html"
+
+    @classmethod
+    def _get_base(cls):
+        return cls._BASE
+
+    @classmethod
+    def _get_batch_size(cls):
+        return 1
+
+    @classmethod
+    def _join_indices(cls, indices):
+        length = len(indices)
+        if length != 1:
+            raise ValueError('only accept one stock per request.')
+        return cls._process_index(indices[0])
+
+    @classmethod
+    def _process_index(cls, index):
+        if index.startswith(('sh', 'sz')):
+            index = index[2:]
+        return index
+
+    @classmethod
+    def _parse(cls, body):
+        matched = re.search(r'<div class="col_r" style="">(.*?)</div>', body,
+                            re.MULTILINE | re.DOTALL | re.UNICODE)
+        if matched is None or len(matched.groups()) == 0:
+            raise ValueError('no matched data found.')
+
+        lines = matched.group(1).strip().split('\n')
+
+        value_pattern = re.compile(r'>(.*?)<', re.UNICODE)
+        data_array = []
+        for line in lines:
+            if r'<tr' not in line:
+                continue
+            data = []
+            line = line.strip()
+            for value in re.findall(value_pattern, line):
+                value = cls._normalize(value)
+                if isinstance(value, string_types) and len(value) == 0:
+                    continue
+                data.append(value)
+            if len(data) > 0:
+                data_array.append(data)
+
+        data_array = np.array(data_array).T
+        df = DataFrame(data_array, columns=NETEASE_STOCK_INFO_COLUMNS)
+        df.set_index('date', inplace=True)
+        return df
+
+    @classmethod
+    def _normalize(cls, value):
+        value = value.strip()
+        if value == '--':
+            value = None
+        elif '-' in value and not value.startswith('-'):
+            value = int_date.to_int_date(value)
+        elif len(value) > 0:
+            if ',' in value:
+                value = value.replace(',', '')
+            value = float(value)
+        return value
 
     @classmethod
     def _trans_index(cls, index):

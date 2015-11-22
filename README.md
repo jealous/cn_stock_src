@@ -125,6 +125,165 @@ date
 20150821  14.61000  14.74000  14.20000  14.22000  123792800  14.22000
 ```
 
+* Get history basic financial data of a stock (by season).
+
+This result is parsed from html from netease.  Use it with caution.
+
+Example:
+
+```python
+financial_info('sh600238')
+```
+
+Output:
+
+```
+         per-share earnings net assets per share  \
+date                                               
+20150930              -0.03                 1.95   
+20150630                  0                 None   
+20150331                  0                 None   
+...
+         Net cash flow from operating activities per share  \
+date                                                         
+20150930                                             -0.22   
+20150630                                              None   
+20150331                                              None   
+...
+         main business income(10**5) main business profit(10**5)  \
+date                                                               
+20150930                        6827                        1967   
+20150630                        9150                        2929   
+20150331                        9649                        3658   
+...
+         operating profit(10**5) equity earnings(10**5)  \
+date                                                      
+20150930                   -2628                   -759   
+20150630                   -1232                   -104   
+20150331                      86                    550   
+...
+         net non-operating income(10**5) total profit(10**5)  \
+date                                                           
+20150930                            None               -1381   
+20150630                            None                 -49   
+20150331                            None                 275   
+...
+         net margin(10**5)  \
+date                         
+20150930             -1448   
+20150630                77   
+20150331                72   
+...
+         Net profit (ex. non recurring gains and losses)(10**5)  \
+date                                                              
+20150930                                               None       
+20150630                                               None       
+20150331                                               None       
+...
+         Net cash flow from operating activities(10**5)  \
+date                                                      
+20150930                                         -10066   
+20150630                                          -7532   
+20150331                                          -3412   
+...
+         Net increase in cash and cash equivalents(10**5) total assets(10**5)  \
+date                                                                            
+20150930                                            -7977              124629   
+20150630                                            -8384              126958   
+20150331                                             -912              137809   
+...
+         floating assets(10**5) gross liabilities(10**5)  \
+date                                                       
+20150930                  77675                    37206   
+20150630                  79353                    38078   
+20150331                  89095                    49008   
+...
+         floating liabilities(10**5) shareholders interests(10**5)  \
+date                                                                 
+20150930                       29585                         87346   
+20150630                       30422                         88801   
+20150331                       41316                         88723   
+...
+         net assets yield weighted (%)  
+date                                    
+20150930                         -1.48  
+20150630                          0.17  
+20150331                          0.08  
+...
+         per-share earnings net assets per share  \
+date                                               
+20150930              -0.03                 1.95   
+20150630                  0                 None   
+20150331                  0                 None   
+...
+         Net cash flow from operating activities per share  \
+date                                                         
+20150930                                             -0.22   
+20150630                                              None   
+20150331                                              None   
+...
+         main business income(10**5) main business profit(10**5)  \
+date                                                               
+20150930                        6827                        1967   
+20150630                        9150                        2929   
+20150331                        9649                        3658   
+...
+         operating profit(10**5) equity earnings(10**5)  \
+date                                                      
+20150930                   -2628                   -759   
+20150630                   -1232                   -104   
+20150331                      86                    550   
+...
+         net non-operating income(10**5) total profit(10**5)  \
+date                                                           
+20150930                            None               -1381   
+20150630                            None                 -49   
+20150331                            None                 275   
+...
+         net margin(10**5)  \
+date                         
+20150930             -1448   
+20150630                77   
+20150331                72   
+...
+         Net profit (ex. non recurring gains and losses)(10**5)  \
+date                                                              
+20150930                                               None       
+20150630                                               None       
+20150331                                               None       
+...
+         Net cash flow from operating activities(10**5)  \
+date                                                      
+20150930                                         -10066   
+20150630                                          -7532   
+20150331                                          -3412   
+...
+         Net increase in cash and cash equivalents(10**5) total assets(10**5)  \
+date                                                                            
+20150930                                            -7977              124629   
+20150630                                            -8384              126958   
+20150331                                             -912              137809   
+...
+         floating assets(10**5) gross liabilities(10**5)  \
+date                                                       
+20150930                  77675                    37206   
+20150630                  79353                    38078   
+20150331                  89095                    49008   
+...
+         floating liabilities(10**5) shareholders interests(10**5)  \
+date                                                                 
+20150930                       29585                         87346   
+20150630                       30422                         88801   
+20150331                       41316                         88723   
+...
+         net assets yield weighted (%)  
+date                                    
+20150930                         -1.48  
+20150630                          0.17  
+20150331                          0.08  
+...
+```
+
 To file issue, please visit:
 
 https://github.com/jealous/cn_stock_src

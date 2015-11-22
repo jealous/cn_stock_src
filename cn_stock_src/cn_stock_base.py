@@ -28,6 +28,10 @@ class CnStockBase(object):
         return 100
 
     @classmethod
+    def _process_index(cls, index):
+        return index
+
+    @classmethod
     def latest(cls, indices, method=None):
         if method is None:
             method = requests.get
@@ -47,7 +51,7 @@ class CnStockBase(object):
         if hasattr(indices, '__iter__'):
             index = cls._join_indices(indices)
         else:
-            index = indices
+            index = cls._process_index(indices)
         url = cls._get_base().format(index)
         log.info("GET: %s", url)
         if method is None:
