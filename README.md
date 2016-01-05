@@ -138,11 +138,11 @@ financial_info('sh600238')
 Output:
 
 ```
-         per-share earnings net assets per share  \
+         name per-share earnings net assets per share  \
 date                                               
-20150930              -0.03                 1.95   
-20150630                  0                 None   
-20150331                  0                 None   
+20150930 海南椰岛      -0.03                 1.95   
+20150630 海南椰岛          0                 None   
+20150331 海南椰岛          0                 None   
 ...
          Net cash flow from operating activities per share  \
 date                                                         

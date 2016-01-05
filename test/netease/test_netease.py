@@ -63,6 +63,7 @@ class NeteaseStockInfoTest(TestCase):
         body = read_file_in_same_dir(__file__, 'zycwzb_600000,season.html')
         result = NeteaseStockInfo._parse(body)
         test_season = result.ix[20141231]
+        assert_that(len(test_season['name']), equal_to(12))
         assert_that(test_season['per-share earnings'], equal_to(2.52))
         assert_that(test_season['net assets per share'], equal_to(13.15))
         assert_that(

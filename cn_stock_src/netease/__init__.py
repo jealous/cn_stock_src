@@ -148,9 +148,11 @@ class NeteaseStockInfo(CnStockBase):
 
         value_pattern = re.compile(r'>(.*?)<', re.UNICODE)
         data_array = []
+        stock_name = cls._get_stock_name(body)
         for line in lines:
             if r'<tr' not in line:
                 continue
+
             data = []
             line = line.strip()
             for value in re.findall(value_pattern, line):
@@ -161,10 +163,20 @@ class NeteaseStockInfo(CnStockBase):
             if len(data) > 0:
                 data_array.append(data)
 
+        data_array.insert(0, [stock_name] * len(data_array[0]))
         data_array = np.array(data_array).T
         df = DataFrame(data_array, columns=NETEASE_STOCK_INFO_COLUMNS)
         df.set_index('date', inplace=True)
         return df
+
+    @classmethod
+    def _get_stock_name(cls, text):
+        ret = ''
+        name_pattern = re.compile(r"var STOCKNAME = '(.+)';", re.UNICODE)
+        for value in re.findall(name_pattern, text):
+            ret = value
+            break
+        return ret
 
     @classmethod
     def _normalize(cls, value):

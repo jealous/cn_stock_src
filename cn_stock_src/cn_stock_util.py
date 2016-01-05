@@ -111,6 +111,8 @@ SINA_STOCK_INFO_COLUMNS = ['type',
                            'quarter net profit(10**8Y)']
 
 NETEASE_STOCK_INFO_COLUMNS = [
+    # 股票中文名
+    'name',
     # 日期(季度或年)
     'date',
     # 基本每股收益(元)

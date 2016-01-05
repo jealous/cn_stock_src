@@ -3,8 +3,6 @@ from cn_stock_util import CnStockHttpError as CnStockHttpError
 
 __author__ = 'Cedric Zhuang'
 
-__version__ = '0.1.5'
-
 __all__ = [
     'latest',
     'latest_company_info',

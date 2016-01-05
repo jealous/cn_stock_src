@@ -1,9 +1,9 @@
 from setuptools import setup, find_packages
 import io
 import os
-from cn_stock_src import __version__
 
 __author__ = 'Cedric Zhuang'
+__version__ = '0.1.6'
 
 
 def here(filename=None):
