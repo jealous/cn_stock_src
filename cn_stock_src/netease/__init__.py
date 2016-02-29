@@ -106,6 +106,9 @@ class NeteaseStockInfo(CnStockBase):
     """get stock info from netease html
 
     sample url looks like this:
+    report data
+    `http://quotes.money.163.com/f10/zycwzb_600010,report.html`
+
     season data
     `http://quotes.money.163.com/f10/zycwzb_600010,season.html`
 
@@ -114,7 +117,7 @@ class NeteaseStockInfo(CnStockBase):
 
     season is the preferred source.
     """
-    _BASE = "http://quotes.money.163.com/f10/zycwzb_{},season.html"
+    _BASE = "http://quotes.money.163.com/f10/zycwzb_{},report.html"
 
     @classmethod
     def _get_base(cls):
