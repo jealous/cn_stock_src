@@ -163,8 +163,9 @@ class NeteaseStockInfo(CnStockBase):
             if len(data) > 0:
                 data_array.append(data)
 
-        data_array.insert(0, [stock_name] * len(data_array[0]))
-        data_array = np.array(data_array).T
+        if data_array:
+            data_array.insert(0, [stock_name] * len(data_array[0]))
+            data_array = np.array(data_array).T
         df = DataFrame(data_array, columns=NETEASE_STOCK_INFO_COLUMNS)
         df.set_index('date', inplace=True)
         return df

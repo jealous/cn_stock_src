@@ -3,7 +3,7 @@ import io
 import os
 
 __author__ = 'Cedric Zhuang'
-__version__ = '0.1.6'
+__version__ = '0.1.7'
 
 
 def here(filename=None):

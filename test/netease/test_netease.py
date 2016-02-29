@@ -98,3 +98,8 @@ class NeteaseStockInfoTest(TestCase):
                     equal_to(26016900))
         assert_that(test_season['net assets yield weighted (%)'],
                     equal_to(21.02))
+
+    def test_parse_no_data(self):
+        body = read_file_in_same_dir(__file__, '001979,season.html')
+        result = NeteaseStockInfo._parse(body)
+        assert_that(len(result), equal_to(0))
