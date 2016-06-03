@@ -2,6 +2,7 @@
 *.pyc
 .tox/
 .env/
+.cache/
 build/
 dist/
 *.egg-info/
