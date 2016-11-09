@@ -295,6 +295,26 @@ Output:
     20150331                          0.08
     ...
 
+- Get data from Tdx(通达信) client offline store.  Make sure you have updated
+  data with Tdx client.
+
+Example:
+
+.. code-block:: python
+
+    from cn_stock_src.tdx import TdxDataSource
+    data = TdxDataSource('<tdx root folder>')
+
+    # read daily kline
+    tdx.read_kline('sz002707')
+
+    # 1 minute data
+    tdx.read_1_minute('sh600000')
+
+    # 5 minute data
+    tdx.read_5_minute('sh600010')
+
+
 To file issue, please visit:
 
 https://github.com/jealous/cn_stock_src
